@@ -11,7 +11,7 @@ cd client
 
 cd server
 
-create a .env file and your mongodb url
+create a .env file and add your mongodb url
 e.g
 `MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/`
 
