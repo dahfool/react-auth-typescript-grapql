@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
 
@@ -14,13 +14,17 @@ interface Props {
 export default (WrappedComponent: React.ComponentType) => {
   const RequireAuth: React.FC<{}> = () => {
 
-    let history = useHistory();
-
-    const { loading, error, data } = useQuery(CurrentUser)
+    const { loading, error, data } = useQuery(CurrentUser, {
+      onCompleted: ({user}) => {
+        if (!user) {
+          history.push('/login')
+        }
+      }
+    })
+    const history = useHistory();
 
     if (loading) return <p>loading</p>;
     if (error) return <p>ERROR</p>;
-    if (!data.user) { history.push('/login') }
 
     return (
       <>

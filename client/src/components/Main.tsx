@@ -5,10 +5,11 @@ interface Props {
   children: React.ReactElement
 }
 
-const Main: React.FC<{}> = () => {
+const Main: React.FC<Props> = ({children}) => {
   return (
     <div className='container'>
       <Header/>
+      {children}
     </div>
   );
 };

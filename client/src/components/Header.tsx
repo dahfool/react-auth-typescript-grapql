@@ -2,13 +2,17 @@ import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import CurrentUser from '../queries/CurrentUser'
 import Logout from '../mutations/Logout'
-import { Link } from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 const Header: React.FC<{}> = () => {
 
-  const { loading, error, data, refetch } = useQuery(CurrentUser);
-  const [logoutUser, { loading: mutationLoading}] = useMutation(Logout, {
-    refetchQueries: [{query: CurrentUser}]
+  const history = useHistory();
+  const { loading, data } = useQuery(CurrentUser);
+  const [logoutUser] = useMutation(Logout, {
+    refetchQueries: [{query: CurrentUser}],
+    onCompleted: () => {
+      history.replace('/login')
+    }
   });
 
   return (

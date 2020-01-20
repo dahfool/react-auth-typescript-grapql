@@ -8,10 +8,8 @@ import CurrentUser from '../queries/CurrentUser'
 
 const LoginForm: React.FC<{}> = () => {
   const [errors, setErrors] = useState<[]>([])
-  const { loading, error, data } = useQuery(CurrentUser)
-  const [LoginUser, { loading: mutationLoading}] = useMutation(Login, {
-    refetchQueries: [{query: CurrentUser}]
-  })
+  const [LoginUser] = useMutation(Login)
+  useQuery(CurrentUser)
   const history = useHistory();
 
   const onSubmit = ({ email, password}: User) => {
@@ -19,26 +17,24 @@ const LoginForm: React.FC<{}> = () => {
       variables: {
         email,
         password
-      }
-    })
+      },
+      awaitRefetchQueries: true,
+      refetchQueries:  [{query: CurrentUser}]
+    }).then(() => { history.replace('/dashboard') })
       .catch((data) => {
         const errors = data.graphQLErrors.map((error: { message: string }) => error.message)
         setErrors(errors)
       })
   }
 
-  if (data && data.user) {
-    history.push('/dashboard')
-  }
-
   return (
-    <div>
+    <>
       <h3>Login</h3>
       <AuthForm
         submit={onSubmit}
         errors={errors}
       />
-    </div>
+    </>
   )
 }
 

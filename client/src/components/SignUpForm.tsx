@@ -8,11 +8,8 @@ import CurrentUser from '../queries/CurrentUser'
 
 const SignUpForm: React.FC<{}> = () => {
   const [errors, setErrors] = useState<[]>([])
-  const { loading, error, data } = useQuery(CurrentUser)
-  const [SignUpUser] = useMutation(Signup, {
-    refetchQueries: [{query: CurrentUser}]
-  })
-
+  useQuery(CurrentUser)
+  const [SignUpUser] = useMutation(Signup)
   const history = useHistory();
 
   const onSubmit = ({ email, password}: User) => {
@@ -20,15 +17,14 @@ const SignUpForm: React.FC<{}> = () => {
       variables: {
         email,
         password
-      }
-    }).catch((data) => {
-      const errors = data.graphQLErrors.map((error: { message: string }) => error.message)
-      setErrors(errors)
-    })
-  }
-
-  if (data && data.user) {
-    history.push('/dashboard')
+      },
+      awaitRefetchQueries: true,
+      refetchQueries:  [{query: CurrentUser}]
+    }).then(() => { history.replace('/dashboard') })
+      .catch((data) => {
+        const errors = data.graphQLErrors.map((error: { message: string }) => error.message)
+        setErrors(errors)
+      })
   }
 
   return (
