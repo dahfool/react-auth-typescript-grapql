@@ -6,7 +6,7 @@ import AuthForm, { User } from './AuthForm'
 import Signup from '../mutations/Signup'
 import CurrentUser from '../queries/CurrentUser'
 
-const SignUpForm: React.FC<{}> = () => {
+const SignUpForm: React.FC = () => {
   const [errors, setErrors] = useState<[]>([])
   useQuery(CurrentUser)
   const [SignUpUser] = useMutation(Signup)

@@ -4,7 +4,7 @@ import CurrentUser from '../queries/CurrentUser'
 import Logout from '../mutations/Logout'
 import {Link, useHistory} from 'react-router-dom'
 
-const Header: React.FC<{}> = () => {
+const Header: React.FC = () => {
 
   const history = useHistory();
   const { loading, data } = useQuery(CurrentUser);
