@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default (WrappedComponent: React.ComponentType) => {
-  const RequireAuth: React.FC<{}> = () => {
+  const RequireAuth: React.FC = () => {
 
     const { loading, error, data } = useQuery(CurrentUser, {
       onCompleted: ({user}) => {
